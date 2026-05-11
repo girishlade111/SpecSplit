@@ -60,9 +60,17 @@ export function ModelSelector({ onSelect, disabled }: ModelSelectorProps) {
     );
   }
 
-  const handleProviderChange = (value: string) => {
-    setSelectedProviderId(value);
-    setSelectedModelId("");
+  const handleProviderChange = (value: string | null) => {
+    if (value) {
+      setSelectedProviderId(value);
+      setSelectedModelId("");
+    }
+  };
+
+  const handleModelChange = (value: string | null) => {
+    if (value) {
+      setSelectedModelId(value);
+    }
   };
 
   const handleRunAnalysis = () => {
@@ -113,7 +121,7 @@ export function ModelSelector({ onSelect, disabled }: ModelSelectorProps) {
           <Label>Model</Label>
           <Select
             value={selectedModelId}
-            onValueChange={setSelectedModelId}
+            onValueChange={handleModelChange}
             disabled={disabled || !selectedProviderId}
           >
             <SelectTrigger>
