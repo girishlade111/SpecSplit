@@ -14,6 +14,8 @@ interface ExportPanelProps {
 
 export function ExportPanel({ result, specText, projectTitle }: ExportPanelProps) {
   const [copiedFormat, setCopiedFormat] = useState<string | null>(null);
+  const ambiguities = result.ambiguities ?? [];
+  const stackHints = result.stackHints ?? [];
 
   const exportMarkdown = useCallback(() => {
     const lines = [
