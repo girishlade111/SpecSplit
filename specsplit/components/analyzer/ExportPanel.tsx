@@ -1,15 +1,9 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Download, FileText, Copy, Check, ExternalLink } from "lucide-react";
+import { Download, FileText, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import type { AnalysisResult } from "@/types";
