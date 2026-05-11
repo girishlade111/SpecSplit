@@ -1,21 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
-  title: "SpecSplit - AI Requirement Analyzer",
-  description: "AI-powered requirement document analyzer for freelance developers",
+  title: "SpecSplit — AI Requirement Analyzer",
+  description: "Turn messy client requirement documents into structured weekly task plans with time estimates, dependencies, and risk flags.",
+  keywords: "requirement analyzer, freelance developer tool, project planning, AI task breakdown",
 };
 
 export default function RootLayout({
@@ -24,11 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
+    <html lang="en" className="h-full">
+      <body className={`${inter.className} min-h-full flex flex-col antialiased`}>
         {children}
         <Toaster />
       </body>
