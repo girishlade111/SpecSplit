@@ -13,7 +13,6 @@ interface TaskCardProps {
 
 export function TaskCard({ task, index }: TaskCardProps) {
   const categoryColor = getCategoryColor(task.category);
-  const totalHours = task.tasks?.reduce((sum, t) => sum + t.hours, 0) || task.hours;
 
   return (
     <Card className="border-border/50 hover:shadow-md transition-shadow animate-in fade-in">
