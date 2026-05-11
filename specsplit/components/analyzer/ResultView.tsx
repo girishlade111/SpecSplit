@@ -140,7 +140,7 @@ export function ResultView({ result, specText, providerId, modelId, onReset }: R
             </TabsContent>
 
             <TabsContent value="stack" className="mt-4">
-              {result.stackHints.length === 0 ? (
+              {stackHints.length === 0 ? (
                 <Card>
                   <CardContent className="pt-6 text-center text-muted-foreground">
                     No specific tech stack detected in requirements
@@ -148,7 +148,7 @@ export function ResultView({ result, specText, providerId, modelId, onReset }: R
                 </Card>
               ) : (
                 <div className="flex flex-wrap gap-2">
-                  {result.stackHints.map((hint, i) => (
+                  {stackHints.map((hint, i) => (
                     <Badge key={i} variant="outline" className="bg-violet-50 text-violet-700 border-violet-200">
                       <Code2 className="size-3 mr-1" />
                       {hint}
