@@ -167,3 +167,10 @@
 .dot-1 { animation: blink 1.4s infinite 0s; }
 .dot-2 { animation: blink 1.4s infinite 0.2s; }
 .dot-3 { animation: blink 1.4s infinite 0.4s; }
+
+.gradient-text {
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
