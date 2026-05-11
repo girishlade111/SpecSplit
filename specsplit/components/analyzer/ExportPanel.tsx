@@ -64,13 +64,13 @@ export function ExportPanel({ result, specText, projectTitle }: ExportPanelProps
       "📈 Summary",
       `- Total Hours: ${result.totalHours}`,
       `- Weeks: ${result.weeks.length}`,
-      "- " + result.stackHints.map((h) => `🏷️ ${h}`).join(" "),
+      "- " + stackHints.map((h) => `🏷️ ${h}`).join(" "),
       "",
     ];
 
-    if (result.ambiguities.length > 0) {
+    if (ambiguities.length > 0) {
       lines.push("⚠️ Ambiguities (Ask client)");
-      lines.push(...result.ambiguities.map((a) => `- ${a}`));
+      lines.push(...ambiguities.map((a) => `- ${a}`));
       lines.push("");
     }
 
