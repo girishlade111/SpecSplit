@@ -25,11 +25,22 @@ export function useModels(providerId: string, apiKey: string) {
       });
 
       if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        throw new Error(data.error || `Failed to fetch models: ${response.status}`);
+        const text = await response.text();
+        let errorData = {};
+        try {
+          errorData = JSON.parse(text);
+        } catch {
+          // ignore
+        }
+        throw new Error(errorData.error || `Failed to fetch models: ${response.status}`);
       }
 
-      const data = await response.json();
+      let data: unknown;
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error("Invalid JSON response from models API");
+      }
       setModels(data.models || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch models");
