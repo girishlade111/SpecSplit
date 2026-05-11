@@ -34,9 +34,9 @@ export async function GET(request: Request) {
     }
 
     const response = await fetch(provider.modelsEndpoint, { headers });
-    let data: unknown;
+    let data: Record<string, unknown> = {};
     try {
-      data = await response.json();
+      data = await response.json() as Record<string, unknown>;
     } catch {
       return NextResponse.json({ models: [], error: "Invalid JSON response from provider API" });
     }
@@ -44,14 +44,16 @@ export async function GET(request: Request) {
     let models: ProviderModel[] = [];
 
     if (provider.modelFetchStrategy === "google") {
-      models = (data.models || [])
-        .filter((m: { name: string }) => m.name.includes("gemini"))
-        .map((m: { name: string }) => ({
+      const googleModels = (data.models as Array<{ name: string }>) || [];
+      models = googleModels
+        .filter((m) => m.name.includes("gemini"))
+        .map((m) => ({
           id: m.name.replace("models/", ""),
           label: m.name.replace("models/", "").replace(/-/g, " ").replace(/\//g, " - "),
         }));
     } else if (provider.modelFetchStrategy === "openai-compat") {
-      models = (data.data || []).map((m: { id: string }) => ({
+      const openaiData = (data.data as Array<{ id: string }>) || [];
+      models = openaiData.map((m) => ({
         id: m.id,
         label: m.id,
       }));

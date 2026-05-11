@@ -108,9 +108,9 @@ Rules:
       );
     }
 
-    let data: unknown;
+    let data: Record<string, unknown> = {};
     try {
-      data = await response.json();
+      data = await response.json() as Record<string, unknown>;
     } catch {
       const text = await response.text();
       return NextResponse.json(
@@ -119,11 +119,13 @@ Rules:
       );
     }
 
-    let rawText: string;
+    let rawText = "";
     if (providerId === "anthropic") {
-      rawText = data.content?.[0]?.text || "";
+      const content = data.content as Array<{ text?: string }> | undefined;
+      rawText = content?.[0]?.text || "";
     } else {
-      rawText = data.choices?.[0]?.message?.content || "";
+      const choices = data.choices as Array<{ message?: { content?: string } }> | undefined;
+      rawText = choices?.[0]?.message?.content || "";
     }
 
     const cleaned = rawText.replace(/```json\s*/g, "").replace(/```/g, "").trim();
