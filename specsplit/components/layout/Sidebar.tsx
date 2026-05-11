@@ -40,7 +40,7 @@ export function Sidebar({ onSelectProject, onNewAnalysis, currentProjectId }: Si
   };
 
   return (
-    <aside className="fixed left-0 top-[--navbar-height] w-[--sidebar-width] h-[calc(100vh-var(--navbar-height))] border-r bg-card overflow-y-auto">
+    <aside className="w-[260px] h-[calc(100vh-60px)] border-r bg-card overflow-y-auto shrink-0">
       <div className="p-3">
         <Button onClick={onNewAnalysis} className="w-full gap-2">
           <Plus className="size-4" />

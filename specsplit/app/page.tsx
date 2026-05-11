@@ -25,21 +25,11 @@ export default function Home() {
     apiKey: string;
   } | null>(null);
   const [currentProject, setCurrentProject] = useState<Project | null>(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
     const handleOpenSettings = () => setSettingsOpen(true);
     window.addEventListener("open-settings", handleOpenSettings);
     return () => window.removeEventListener("open-settings", handleOpenSettings);
-  }, []);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setSidebarOpen(window.innerWidth >= 1024);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const handleAnalyze = async (specTextToAnalyze: string) => {
@@ -113,61 +103,40 @@ export default function Home() {
     setSelectedConfig(null);
   };
 
-  const handleModelSelect = (config: {
-    providerId: string;
-    modelId: string;
-    apiKey: string;
-  }) => {
-    setSelectedConfig(config);
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <Navbar onSettingsClick={() => setSettingsOpen(true)} />
-      
-      <div className="flex pt-[--navbar-height]">
-        <div className={`${sidebarOpen ? 'block' : 'hidden'} lg:block`}>
-          <Sidebar
-            onSelectProject={handleSelectProject}
-            onNewAnalysis={handleNewAnalysis}
-            currentProjectId={currentProject?.id}
-          />
-        </div>
-
-        <main className="flex-1 p-6 lg:ml-[--sidebar-width]">
-          {isLoading ? (
-            <LoadingSpinner
-              message="Analyzing your requirements..."
-              submessage="This may take 10-30 seconds"
-            />
-          ) : result ? (
-            <ResultView
-              result={result}
-              specText={specText}
-              providerId={selectedConfig?.providerId || ""}
-              modelId={selectedConfig?.modelId || ""}
-              onReset={handleNewAnalysis}
-            />
-          ) : (
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              <div className="space-y-6">
-                <SpecInput
-                  onAnalyze={handleAnalyze}
-                  isLoading={isLoading}
-                  disabled={!selectedConfig}
-                />
-                
-                <ModelSelector
-                  onSelect={handleModelSelect}
-                  disabled={isLoading}
-                />
-              </div>
-
-              <div className="hidden xl:block">
-                <EmptyState />
-              </div>
+      <div className="flex" style={{ paddingTop: "60px" }}>
+        <Sidebar 
+          onSelectProject={handleSelectProject}
+          onNewAnalysis={handleNewAnalysis}
+          currentProjectId={currentProject?.id}
+        />
+        
+        <main className="flex-1 ml-[260px]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[calc(100vh-60px)]">
+            {/* LEFT PANEL */}
+            <div className="p-6 border-r flex flex-col gap-6">
+              <ModelSelector onSelect={setSelectedConfig} disabled={isLoading} />
+              <Separator />
+              <SpecInput onAnalyze={handleAnalyze} isLoading={isLoading} disabled={!selectedConfig} />
             </div>
-          )}
+            
+            {/* RIGHT PANEL */}
+            <div className="p-6">
+              {isLoading && <LoadingSpinner />}
+              {!isLoading && !result && <EmptyState />}
+              {!isLoading && result && (
+                <ResultView
+                  result={result}
+                  specText={specText}
+                  providerId={selectedConfig?.providerId ?? ""}
+                  modelId={selectedConfig?.modelId ?? ""}
+                  onReset={handleNewAnalysis}
+                />
+              )}
+            </div>
+          </div>
         </main>
       </div>
 
