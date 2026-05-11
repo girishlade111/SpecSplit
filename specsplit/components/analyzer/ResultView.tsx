@@ -21,6 +21,8 @@ interface ResultViewProps {
 }
 
 export function ResultView({ result, specText, providerId, modelId, onReset }: ResultViewProps) {
+  const ambiguities = result.ambiguities ?? [];
+  const stackHints = result.stackHints ?? [];
   const totalTasks = result.weeks.reduce((sum, w) => sum + w.tasks.length, 0);
   const risksCount = result.weeks.reduce(
     (sum, w) => sum + w.tasks.filter((t) => t.risk !== null).length,
@@ -108,7 +110,7 @@ export function ResultView({ result, specText, providerId, modelId, onReset }: R
             </TabsContent>
 
             <TabsContent value="ambiguities" className="mt-4">
-              {result.ambiguities.length === 0 ? (
+              {ambiguities.length === 0 ? (
                 <Card className="border-green-200 bg-green-50/50">
                   <CardContent className="pt-6 flex items-center gap-3">
                     <CheckCircle2 className="size-6 text-green-500" />
@@ -120,7 +122,7 @@ export function ResultView({ result, specText, providerId, modelId, onReset }: R
                 </Card>
               ) : (
                 <div className="space-y-3">
-                  {result.ambiguities.map((ambiguity, i) => (
+                  {ambiguities.map((ambiguity, i) => (
                     <Card key={i} className="border-amber-200 bg-amber-50/50">
                       <CardContent className="pt-4">
                         <div className="flex items-start gap-3">
