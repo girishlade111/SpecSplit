@@ -26,9 +26,9 @@ export function useModels(providerId: string, apiKey: string) {
 
       if (!response.ok) {
         const text = await response.text();
-        let errorData = {};
+        let errorData: { error?: string } = {};
         try {
-          errorData = JSON.parse(text);
+          errorData = JSON.parse(text) as { error?: string };
         } catch {
           // ignore
         }
