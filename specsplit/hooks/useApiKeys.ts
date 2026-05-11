@@ -1,23 +1,3 @@
-   at <unknown> (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:4104:33)
-    at runWithFiberInDEV (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:965:74)
-    at warnOnInvalidKey (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:4103:21)
-    at reconcileChildrenArray (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:4120:29)
-    at reconcileChildFibersImpl (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:4236:51)
-    at <unknown> (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:4261:39)
-    at reconcileChildren (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:5898:119)
-    at beginWork (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:6758:1573)
-    at runWithFiberInDEV (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:965:74)
-    at performUnitOfWork (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:9555:97)
-    at workLoopSync (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:9449:40)
-    at renderRootSync (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:9433:13)
-    at performWorkOnRoot (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:9061:186)
-    at performSyncWorkOnRoot (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:10263:9)
-    at flushSyncWorkAcrossRoots_impl (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:10179:316)
-    at flushSyncWork$1 (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:9230:86)
-    at Object.f (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:16411:79)
-    at push.exports.flushSync (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:87:108)
-    at useAnimationsFinished.useStableCallback.done (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_%40base-ui_react_esm_0ak24zo._.js:2072:198)
-    at useAnimationsFinished.useStableCallback.exec (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_%40base-ui_react_esm_0ak24zo._.js:2085:29) (file://C:/Users/Girish Lade/OneDrive/Desktop/SpecSplit/specsplit/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_058-ah~._.js:4104:33)
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
