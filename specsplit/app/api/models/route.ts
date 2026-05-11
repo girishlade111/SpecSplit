@@ -34,7 +34,12 @@ export async function GET(request: Request) {
     }
 
     const response = await fetch(provider.modelsEndpoint, { headers });
-    const data = await response.json();
+    let data: unknown;
+    try {
+      data = await response.json();
+    } catch {
+      return NextResponse.json({ models: [], error: "Invalid JSON response from provider API" });
+    }
 
     let models: ProviderModel[] = [];
 
