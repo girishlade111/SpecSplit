@@ -41,7 +41,7 @@ export function useModels(providerId: string, apiKey: string) {
       } catch {
         throw new Error("Invalid JSON response from models API");
       }
-      setModels(data.models || []);
+      setModels((data as { models?: ProviderModel[] })?.models || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch models");
       setModels([]);
