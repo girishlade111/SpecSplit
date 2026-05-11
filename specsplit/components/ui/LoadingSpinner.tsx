@@ -20,9 +20,9 @@ export function LoadingSpinner({
       <p className="font-medium">{message}</p>
       <p className="text-sm text-muted-foreground">{submessage}</p>
       <div className="flex gap-1">
-        <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-        <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-        <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+        <span className="w-2 h-2 bg-muted-foreground rounded-full dot-1" />
+        <span className="w-2 h-2 bg-muted-foreground rounded-full dot-2" />
+        <span className="w-2 h-2 bg-muted-foreground rounded-full dot-3" />
       </div>
     </div>
   );
