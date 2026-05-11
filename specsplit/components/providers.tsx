@@ -2,14 +2,12 @@
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
-interface ThemeProviderProps {
+export function ThemeProvider({ 
+  children, 
+  ...props 
+}: { 
   children: React.ReactNode;
-  attribute?: string;
-  defaultTheme?: string;
-  enableSystem?: boolean;
-  disableTransitionOnChange?: boolean;
-}
-
-export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
+  [key: string]: unknown;
+}) {
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
