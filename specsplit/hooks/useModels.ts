@@ -41,7 +41,11 @@ export function useModels(providerId: string, apiKey: string) {
       } catch {
         throw new Error("Invalid JSON response from models API");
       }
-      setModels((data as { models?: ProviderModel[] })?.models || []);
+      const rawModels = (data as { models?: ProviderModel[] })?.models || [];
+      const uniqueModels = rawModels.filter(
+        (model, index, self) => index === self.findIndex((m) => m.id === model.id)
+      );
+      setModels(uniqueModels);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch models");
       setModels([]);
