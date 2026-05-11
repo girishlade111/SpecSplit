@@ -28,15 +28,15 @@ export function ExportPanel({ result, specText, projectTitle }: ExportPanelProps
       "",
     ];
 
-    if (result.stackHints.length > 0) {
+    if (stackHints.length > 0) {
       lines.push("## Stack Hints");
-      lines.push(...result.stackHints.map((h) => `- ${h}`));
+      lines.push(...stackHints.map((h) => `- ${h}`));
       lines.push("");
     }
 
-    if (result.ambiguities.length > 0) {
+    if (ambiguities.length > 0) {
       lines.push("## Ambiguities (Need Client Clarification)");
-      lines.push(...result.ambiguities.map((a) => `- ${a}`));
+      lines.push(...ambiguities.map((a) => `- ${a}`));
       lines.push("");
     }
 
