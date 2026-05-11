@@ -108,7 +108,16 @@ Rules:
       );
     }
 
-    const data = await response.json();
+    let data: unknown;
+    try {
+      data = await response.json();
+    } catch {
+      const text = await response.text();
+      return NextResponse.json(
+        { error: `Invalid JSON response from AI: ${text.slice(0, 200)}` },
+        { status: 500 }
+      );
+    }
 
     let rawText: string;
     if (providerId === "anthropic") {
