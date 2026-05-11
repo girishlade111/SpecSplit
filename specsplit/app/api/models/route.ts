@@ -1,1 +1,60 @@
-// TODO
+import { NextResponse } from "next/server";
+import { PROVIDERS } from "@/lib/providers";
+import type { ProviderModel } from "@/types";
+
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const providerId = searchParams.get("provider");
+    const apiKey = request.headers.get("x-api-key") || "";
+
+    if (!providerId) {
+      return NextResponse.json({ models: [], error: "Missing provider" });
+    }
+
+    const provider = PROVIDERS[providerId];
+    if (!provider) {
+      return NextResponse.json({ models: [], error: "Unknown provider" });
+    }
+
+    if (provider.modelFetchStrategy === "hardcoded" && provider.hardcodedModels) {
+      return NextResponse.json({ models: provider.hardcodedModels });
+    }
+
+    if (!provider.modelsEndpoint) {
+      return NextResponse.json({ models: [] });
+    }
+
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+
+    if (apiKey && providerId !== "ollama") {
+      headers["Authorization"] = `Bearer ${apiKey}`;
+    }
+
+    const response = await fetch(provider.modelsEndpoint, { headers });
+    const data = await response.json();
+
+    let models: ProviderModel[] = [];
+
+    if (provider.modelFetchStrategy === "google") {
+      models = (data.models || [])
+        .filter((m: { name: string }) => m.name.includes("gemini"))
+        .map((m: { name: string }) => ({
+          id: m.name.replace("models/", ""),
+          label: m.name.replace("models/", "").replace(/-/g, " ").replace(/\//g, " - "),
+        }));
+    } else if (provider.modelFetchStrategy === "openai-compat") {
+      models = (data.data || []).map((m: { id: string }) => ({
+        id: m.id,
+        label: m.id,
+      }));
+    }
+
+    return NextResponse.json({ models });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json({ models: [], error: message });
+  }
+}
