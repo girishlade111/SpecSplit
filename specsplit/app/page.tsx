@@ -141,13 +141,11 @@ export default function Home() {
       </div>
 
       <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Settings</DialogTitle>
+            <DialogTitle>Settings — API Keys</DialogTitle>
           </DialogHeader>
-          <div className="py-4">
-            <ApiKeysPanel />
-          </div>
+          <ApiKeysPanel />
         </DialogContent>
       </Dialog>
     </div>
