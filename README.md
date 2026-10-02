@@ -1,258 +1,96 @@
 # SpecSplit
 
-> A powerful tool for splitting and managing specification documents into manageable sections
+> Paste a freelance/software requirement document, pick your AI provider, and get a week-by-week task plan with hours, risks, dependencies, ambiguities, and stack hints — analyzed by AI.
 
----
-
-## Table of Contents
-
-- [Features](#features)
-- [System Architecture](#system-architecture)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-- [Configuration](#configuration)
-- [Stats](#stats)
-- [Contributing](#contributing)
-- [License](#license)
-
----
+SpecSplit is a Next.js web app for **spec analysis and project estimation**. You paste a requirement document, choose an AI provider (OpenAI, Anthropic, Google Gemini, Groq, NVIDIA, and more), and the app asks the model to return a structured plan: tasks grouped by week, realistic hour estimates, dependency ordering, specific technical risks, vague points that need client clarification, and detected technology stack hints.
 
 ## Features
 
-- **Document Parsing** - Intelligent parsing of various document formats (Markdown, JSON, YAML, XML)
-- **Smart Section Detection** - Automatically identifies and separates document sections based on headers and logical blocks
-- **Batch Processing** - Process multiple specification files simultaneously
-- **Custom Output Formats** - Export split documents in multiple formats (HTML, PDF, Markdown, JSON)
-- **Version Control Integration** - Seamless integration with Git for tracking document changes
-- **Template System** - Create and use reusable templates for consistent document structure
-- **Search & Filter** - Quick search across all split documents with advanced filtering options
-- **Collaboration Tools** - Share and collaborate on specification documents with team members
-- **Export Options** - Export individual sections or entire document trees
-- **CLI Support** - Powerful command-line interface for automation workflows
-
----
-
-## System Architecture
-
-```mermaid
-flowchart TB
-    subgraph Client["Frontend Layer"]
-        UI[Web Interface]
-        CLI[Command Line Interface]
-        API[REST API Client]
-    end
-
-    subgraph Core["Core Processing Engine"]
-        Parser[Document Parser]
-        Splitter[Section Splitter]
-        Analyzer[Content Analyzer]
-        Validator[Schema Validator]
-    end
-
-    subgraph Services["Service Layer"]
-        FS[File System Service]
-        DB[(Database Service)]
-        Cache[(Cache Service)]
-        Export[Export Service]
-    end
-
-    subgraph Storage["Storage Layer"]
-        Local[Local Storage]
-        Cloud[Cloud Storage]
-        Git[Git Repository]
-    end
-
-    UI --> API
-    CLI --> API
-    API --> Parser
-    Parser --> Splitter
-    Splitter --> Analyzer
-    Analyzer --> Validator
-    Validator --> FS
-    FS --> DB
-    FS --> Cache
-    FS --> Export
-    Export --> Local
-    Export --> Cloud
-    Export --> Git
-```
-
----
+- **Spec analysis** — turns raw requirement docs into a week-by-week task breakdown (JSON, schema-prompted)
+- **Multi-provider** — OpenAI, Anthropic, Google Gemini, Groq, NVIDIA, Ollama, and more (configurable in `lib/providers.ts`)
+- **Dynamic model lists** — fetches each provider's available models live (OpenAI-compatible endpoints, Google endpoint), with hardcoded fallbacks where APIs don't expose models
+- **BYO keys** — API keys are entered in the UI and stored only in the browser's local storage (`useApiKeys` hook); no server-side secrets
+- **Server-side proxy** — API routes forward requests to providers so the browser never hardcodes provider wiring
+- **Export** — copy/export the generated plan (see `lib/exportUtils.ts`)
+- **Dark/light theme** — `next-themes` with shadcn/ui components
+- **Toast feedback** — `sonner` notifications for analysis states
 
 ## Tech Stack
 
-### Frontend
-- **Framework**: React 18 / Vue 3 / Angular 15
-- **Styling**: Tailwind CSS / SCSS / Styled Components
-- **State Management**: Redux Toolkit / Pinia / NgRx
-- **Build Tool**: Vite / Webpack
-
-### Backend
-- **Runtime**: Node.js 18+ / Python 3.10+ / Go 1.20+
-- **Framework**: Express.js / FastAPI / Gin
-- **Database**: PostgreSQL / MongoDB / SQLite
-- **Cache**: Redis / Memcached
-
-### DevOps
-- **Container**: Docker / Kubernetes
-- **CI/CD**: GitHub Actions / GitLab CI / Jenkins
-- **Cloud**: AWS / GCP / Azure
-
-### Tools
-- **Version Control**: Git
-- **Testing**: Jest / PyTest / Go Testing
-- **Linting**: ESLint / Pylint / golangci-lint
-
----
+- **Framework:** Next.js 16 (App Router, Route Handlers)
+- **UI:** React 19, Tailwind CSS v4, shadcn/ui, lucide-react, `tw-animate-css`
+- **API:** Next.js Route Handlers (`app/api/analyze`, `app/api/models`)
+- **State:** React hooks + local storage for API keys (`hooks/useApiKeys.ts`, `hooks/useModels.ts`)
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18 or higher
-- Python 3.10+ (if using Python backend)
-- Git
-- Docker (optional, for containerized setup)
+- Node.js 18+
+- An API key for at least one supported provider (e.g. OpenAI, Gemini, Groq)
 
-### Installation
+### Run locally
 
 ```bash
-# Clone the repository
-git clone https://github.com/girishlade111/SpecSplit.git
-cd SpecSplit
-
-# Install dependencies
-npm install   # For Node.js
-# or
-pip install -r requirements.txt   # For Python
-
-# Configure environment
-cp .env.example .env
-
-# Start the application
-npm run dev   # Development mode
-# or
-npm start    # Production mode
+cd specsplit
+npm install
+npm run dev
 ```
 
-### Quick Start
+Open http://localhost:3000.
 
-1. **Create a new specification document**
-   ```bash
-   specsplit init my-spec
-   ```
+### How to use
 
-2. **Import an existing document**
-   ```bash
-   specsplit import document.md
-   ```
+1. Paste (or type) your requirement document into the input area.
+2. Open settings, pick a provider, and paste your API key (stays in your browser).
+3. Click **Analyze** — the app returns:
+   - `weeks`: tasks per week with titles, hours, `dependsOn`, `risk`, `category`
+   - `ambiguities`: vague requirements needing client clarification
+   - `totalHours`: summed estimate
+   - `stackHints`: detected technologies
 
-3. **Split the document into sections**
-   ```bash
-   specsplit split --output ./output
-   ```
+## Project Structure
 
-4. **Export results**
-   ```bash
-   specsplit export --format html
-   ```
-
----
-
-## Configuration
-
-### Environment Variables
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PORT` | Server port | `3000` |
-| `NODE_ENV` | Environment mode | `development` |
-| `DATABASE_URL` | Database connection string | `sqlite://./data.db` |
-| `CACHE_ENABLED` | Enable caching | `true` |
-| `MAX_FILE_SIZE` | Maximum file upload size (MB) | `50` |
-| `OUTPUT_DIR` | Default output directory | `./output` |
-
-### Configuration File
-
-Create `specsplit.config.json` in your project root:
-
-```json
-{
-  "parser": {
-    "autoDetect": true,
-    "supportedFormats": [".md", ".json", ".yaml", ".xml"],
-    "encoding": "utf-8"
-  },
-  "splitter": {
-    "strategy": "semantic",
-    "minSectionLength": 100,
-    "maxSectionLength": 10000
-  },
-  "export": {
-    "defaultFormat": "markdown",
-    "includeMetadata": true,
-    "generateIndex": true
-  },
-  "output": {
-    "directory": "./output",
-    "namingPattern": "{section}-{index}"
-  }
-}
+```
+SpecSplit/
+├── specsplit/               # Next.js application
+│   ├── app/
+│   │   ├── page.tsx         # main UI
+│   │   ├── layout.tsx       # root layout, theme provider
+│   │   └── api/
+│   │       ├── analyze/route.ts  # POST: sends spec + key to provider, returns JSON plan
+│   │       └── models/route.ts   # GET: fetches provider model list (BYO key in header)
+│   ├── components/
+│   │   ├── analyzer/        # analysis UI
+│   │   ├── settings/        # provider + API key settings
+│   │   ├── layout/          # header, layout chrome
+│   │   ├── ui/              # shadcn/ui primitives
+│   │   └── providers.tsx    # theme provider wiring
+│   ├── hooks/
+│   │   ├── useApiKeys.ts    # local-storage API key management
+│   │   └── useModels.ts     # provider model list fetching
+│   ├── lib/
+│   │   ├── providers.ts     # provider registry (endpoints, strategies, docs links)
+│   │   ├── prompts.ts       # system prompt / JSON schema sent to models
+│   │   ├── exportUtils.ts   # export helpers
+│   │   └── fetchModels.ts   # model-list fetch logic
+│   ├── types/index.ts       # Provider / ProviderModel types
+│   └── public/              # static assets
+└── README.md
 ```
 
-### CLI Options
+## Environment Variables
 
-```bash
-specsplit [command] [options]
+None required — the app is fully bring-your-own-key. API keys are supplied at runtime via the UI (body field for analyze, `x-api-key` header for model fetch).
 
-Commands:
-  init          Initialize a new project
-  import        Import a document
-  split         Split document into sections
-  export        Export split documents
-  serve         Start the web server
-  config        Manage configuration
+## Deployment Notes
 
-Options:
-  --verbose     Enable verbose logging
-  --config      Specify config file path
-  --output      Set output directory
-  --format      Set export format
-```
-
----
-
-## Stats
-
-| Metric | Value |
-|--------|-------|
-| **Version** | 1.0.0 |
-| **Last Updated** | May 2026 |
-| **Contributors** | 1+ |
-| **Stars** | - |
-| **Forks** | - |
-| **License** | MIT |
-
----
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
----
+This is a **dynamic** Next.js app (server-side Route Handlers proxy provider calls), so it deploys to Netlify with the Next.js runtime, not as a static export. Build with `npm run build` and deploy via the Netlify CLI / Netlify dashboard (no env vars needed).
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) for details.
+MIT.
 
 ---
 
-## Support
-
-- 📖 [Documentation](https://github.com/girishlade111/SpecSplit/wiki)
-- 🐛 [Issue Tracker](https://github.com/girishlade111/SpecSplit/issues)
-- 💬 [Discussions](https://github.com/girishlade111/SpecSplit/discussions)
+Built by Girish Lade — https://ladestack.in
